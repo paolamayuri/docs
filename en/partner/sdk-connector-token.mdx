@@ -1,0 +1,51 @@
+---
+title: "Generate the SDK token"
+api: "GET /instances/{instanceId}/token/{token}/sdk-connector-token"
+description: "Generates a session token to open the Connection SDK in the frontend"
+---
+
+import InstanceId from '/snippets/en/params/instance-id.mdx'
+import Token from '/snippets/en/params/token.mdx'
+
+## Concept
+
+This method generates a **session token** for the [Connection SDK](/en/partner/sdk-connector). Your backend calls this endpoint with your Client-Token and returns the resulting `token` to the frontend, which uses it in `ZAPIConnector.open({ token })`.
+
+<Warning>
+  This call must be made by **your backend**. Never expose your Client-Token or the instance credentials (instanceId and token) in the frontend. The generated token is short-lived — generate it on demand, right when the customer is about to connect.
+</Warning>
+
+Full implementation guide: [Connection SDK](/en/partner/sdk-connector).
+
+---
+
+## Attributes
+
+### Header
+
+<InstanceId />
+<Token />
+
+---
+
+## Response
+
+### 200
+
+<ResponseField name="token" type="string">
+  Session token to use in `ZAPIConnector.open({ token })` on the frontend
+</ResponseField>
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+### 405
+
+In this case, make sure you are sending the method specification correctly, i.e. check whether you sent POST or GET as specified at the beginning of this topic.
+
+### 415
+
+If you receive a 415 error, make sure to add the "Content-Type" of the object you are sending to the request headers — most often "application/json".

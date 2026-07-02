@@ -1,0 +1,334 @@
+---
+title: "SDK de conexão"
+description: "Modal pronto de conexão do WhatsApp para embutir no seu software"
+---
+
+## Visão geral
+
+O **SDK de conexão** é um modal pronto que você embute no seu próprio software. O seu cliente clica em "conectar", escaneia o QR Code (ou usa o número de telefone) e a instância Z-API dele conecta — tudo sem você construir nenhuma tela.
+
+- Carrega com uma única tag `<script>` — expõe `window.ZAPIConnector`.
+- Independente de framework (React, Vue, Angular, HTML puro…).
+- Isolado via Shadow DOM: o CSS do seu site não afeta o modal, e o modal não afeta o seu.
+- Personalizável (tema claro/escuro + cores) e traduzível (pt/en, ou seus próprios textos).
+
+<Card
+  title="Testar no playground"
+  icon="flask"
+  href="https://app.z-api.io/demo.html"
+>
+  Gere um token, escolha as opções e abra o conector ao vivo em
+  `https://app.z-api.io/demo.html`.
+</Card>
+
+<Info>
+  O SDK cobre os mesmos cenários do painel Z-API: QR Code, número de telefone,
+  autenticação por chave de acesso (extensão) e migração de uma sessão do
+  WhatsApp Web já conectada.
+</Info>
+
+---
+
+## Como funciona
+
+A integração tem três partes: o **seu backend** gera um token de sessão, o **seu site** carrega o SDK e abre o conector com esse token.
+
+<Steps>
+  <Step title="Seu backend gera o token">
+    O seu servidor chama a Z-API (com o seu Client-Token) e recebe um token de sessão curto e descartável. Veja [gerar token do SDK](/partner/sdk-connector-token).
+  </Step>
+  <Step title="Seu site carrega o SDK">
+    Inclua a tag `<script>` que expõe `window.ZAPIConnector`.
+  </Step>
+  <Step title="Seu site abre o conector">
+    Chame `ZAPIConnector.open({ token })` com o token retornado pelo backend.
+  </Step>
+</Steps>
+
+---
+
+## 1. Gere o token (no seu backend)
+
+Quem fala com a Z-API é o **seu backend**, porque essa chamada usa o seu **Client-Token**, que nunca deve chegar ao navegador.
+
+```bash
+curl --location 'https://api.z-api.io/instances/{instanceId}/token/{instanceToken}/sdk-connector-token' \
+--header 'Client-Token: SEU_CLIENT_TOKEN'
+```
+
+**Resposta:**
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+Devolva esse `token` ao seu frontend, sem alterá-lo. Documentação completa do endpoint: [Gerar token do SDK](/partner/sdk-connector-token).
+
+<Warning>
+  O `token` é gerado pelo seu backend e é de uso único para o conector. Nunca
+  exponha o seu Client-Token nem as credenciais da instância (instanceId e
+  token) no frontend.
+</Warning>
+
+---
+
+## 2. Carregue o SDK
+
+Inclua a tag `<script>` na sua página. Essa URL **sempre serve a versão mais recente** — você não precisa atualizar nada quando lançarmos correções e melhorias.
+
+```html
+<script src="https://app.z-api.io/sdk.js" async></script>
+```
+
+Isso expõe `window.ZAPIConnector` globalmente.
+
+---
+
+## 3. Abra o conector
+
+Quando o cliente clicar em conectar, busque o token no seu backend e chame `open()`. Ele devolve uma `Promise<boolean>` que fica pendente até o modal fechar e resolve `true` se o canal conectou:
+
+```js
+async function conectar(instanceId) {
+  const { token } = await fetch(`/sdk-token/${instanceId}`).then((r) =>
+    r.json(),
+  );
+
+  const conectado = await ZAPIConnector.open({ token });
+  if (conectado) {
+    atualizarInstancias();
+  }
+}
+```
+
+---
+
+## Opções
+
+`ZAPIConnector.open(options)` aceita:
+
+| Opção       | Tipo                                | Descrição                                                                                                           |
+| ----------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `token`     | `string` **(obrigatório)**          | Token de sessão retornado pelo seu backend. Passe como veio — o SDK escolhe a experiência de conexão a partir dele. |
+| `theme`     | `"light" \| "dark" \| ThemeOptions` | Tema de cores. Padrão: `"light"`. Veja [Temas](#temas).                                                             |
+| `locale`    | `"pt" \| "en" \| string`            | Idioma da interface. Detectado do navegador quando omitido.                                                         |
+| `messages`  | `Partial<Messages>`                 | Sobrescreve textos individuais ou traduz para outro idioma. Veja [Mensagens](#mensagens).                           |
+| `methods`   | `{ qr?, phone?, migrate? }`         | Quais opções de conexão exibir. Cada uma é `true` por padrão. Veja [Métodos de conexão](#métodos-de-conexão).       |
+| `container` | `string \| HTMLElement`             | Onde montar o modal. Padrão: `document.body`.                                                                       |
+
+---
+
+## Temas
+
+Passe um modo (`"light"` ou `"dark"`), ou um objeto `ThemeOptions` para sobrescrever cores específicas por modo:
+
+```js
+ZAPIConnector.open({
+  token,
+  theme: {
+    mode: "dark",
+    light: { accent: "#25d366" },
+    dark: { accent: "#00a884", surface: "#111b21" },
+  },
+});
+```
+
+Tokens de cor (`ThemeColors`, todos opcionais):
+
+| Token            | Descrição                                |
+| ---------------- | ---------------------------------------- |
+| `overlay`        | Cor do fundo escurecido atrás do modal   |
+| `surface`        | Cor de fundo do cartão do modal          |
+| `surfaceAlt`     | Fundo secundário (abas, campos, caixas)  |
+| `text`           | Cor do texto principal                   |
+| `textMuted`      | Cor do texto secundário                  |
+| `border`         | Cor das bordas                           |
+| `accent`         | Cor de destaque (botões, links, realces) |
+| `accentContrast` | Cor do texto sobre a cor de destaque     |
+
+---
+
+## Idioma
+
+Idiomas nativos: **`pt`** e **`en`** (detectados de `navigator.language`). Force um com `locale`:
+
+```js
+ZAPIConnector.open({ token, locale: "pt" });
+```
+
+Para ajustar textos ou traduzir para um idioma que não seja nativo, use `messages` — um mapa parcial mesclado sobre o idioma selecionado. Passe só as chaves que quer mudar:
+
+```js
+ZAPIConnector.open({
+  token,
+  messages: {
+    title: "Conecte seu número",
+    subtitle: "Aponte a câmera do WhatsApp para o código.",
+  },
+});
+```
+
+---
+
+## Métodos de conexão
+
+Por padrão o modal mostra QR Code, número de telefone e o link de migração. Use `methods` para exibir só o que quiser:
+
+```js
+ZAPIConnector.open({ token, methods: { phone: false, migrate: false } });
+```
+
+| Chave     | Descrição                                                             |
+| --------- | --------------------------------------------------------------------- |
+| `qr`      | Aba do QR Code. Padrão `true`.                                        |
+| `phone`   | Aba do número de telefone. Padrão `true`.                             |
+| `migrate` | Link para migrar uma sessão do WhatsApp Web existente. Padrão `true`. |
+
+<Info>
+  Quando só um método fica ativo, as abas não aparecem (vai direto para ele). Se
+  você desativar QR e telefone ao mesmo tempo, o SDK reativa os dois para não
+  deixar o modal sem forma de conectar.
+</Info>
+
+---
+
+## Eventos
+
+Acompanhe o ciclo de vida da conexão com `on` / `off`:
+
+```js
+ZAPIConnector.on("connected", () => atualizarInstancias());
+ZAPIConnector.on("status", ({ status }) => console.log(status));
+
+ZAPIConnector.off("connected", handler);
+```
+
+| Evento         | Payload       | Disparado quando                                           |
+| -------------- | ------------- | ---------------------------------------------------------- |
+| `connected`    | `{ phone? }`  | o canal conectou                                           |
+| `disconnected` | `{ reason? }` | caiu ou foi desconectado                                   |
+| `qr`           | `{ base64 }`  | um novo QR Code foi renderizado                            |
+| `status`       | `{ status }`  | o status mudou (`"qr"`, `"connected"` ou `"disconnected"`) |
+| `error`        | `{ error }`   | ocorreu um erro                                            |
+| `close`        | –             | o usuário fechou o modal                                   |
+
+---
+
+## Métodos
+
+| Método                | Retorno            | Descrição                                                    |
+| --------------------- | ------------------ | ------------------------------------------------------------ |
+| `open(options)`       | `Promise<boolean>` | Abre o modal; resolve quando ele fecha (`true` se conectou). |
+| `close()`             | `void`             | Fecha o modal programaticamente.                             |
+| `on(event, handler)`  | `void`             | Inscreve em um evento.                                       |
+| `off(event, handler)` | `void`             | Cancela a inscrição.                                         |
+
+---
+
+## Mensagens
+
+Todo texto do modal pode ser sobrescrito por `messages`. Abaixo, cada chave, o valor padrão em português e para que serve. Passe apenas as chaves que quiser alterar.
+
+### Tela inicial e QR Code
+
+| Chave       | Padrão                                                          | Descrição                           |
+| ----------- | --------------------------------------------------------------- | ----------------------------------- |
+| `title`     | Conecte seu WhatsApp                                            | Título do modal                     |
+| `subtitle`  | Escaneie o QR code com seu celular para conectar.               | Subtítulo abaixo do título          |
+| `step1`     | Abra o **WhatsApp** no seu celular                              | Passo 1 das instruções do QR        |
+| `step2`     | Toque em **Configurações** e depois em **Aparelhos conectados** | Passo 2 das instruções do QR        |
+| `step3`     | Toque em **Conectar um aparelho** e escaneie este código        | Passo 3 das instruções do QR        |
+| `qrLoading` | Gerando QR code…                                                | Texto enquanto o QR carrega         |
+| `qrError`   | Não foi possível carregar o QR code. Tente novamente.           | Erro ao carregar o QR               |
+| `close`     | Fechar                                                          | Rótulo (aria) do botão de fechar    |
+| `tabQr`     | QR code                                                         | Rótulo da aba de QR Code            |
+| `tabPhone`  | Número de telefone                                              | Rótulo da aba de número de telefone |
+
+### Conexão por número (web)
+
+| Chave              | Padrão                                                              | Descrição                               |
+| ------------------ | ------------------------------------------------------------------- | --------------------------------------- |
+| `phoneHint`        | Digite seu número do WhatsApp para receber um código de pareamento. | Instrução da aba de telefone            |
+| `countrySearch`    | Buscar país                                                         | Placeholder da busca de país            |
+| `phonePlaceholder` | Número de telefone                                                  | Placeholder do campo de número          |
+| `submit`           | Continuar                                                           | Botão para gerar o código               |
+| `phoneSending`     | Gerando código…                                                     | Estado do botão enquanto gera           |
+| `codeHint`         | Digite este código no WhatsApp:                                     | Instrução acima do código de pareamento |
+| `codeStep3`        | Toque em **Conectar com número de telefone** e digite o código      | Passo para inserir o código no WhatsApp |
+| `codeBack`         | Usar outro número                                                   | Voltar para digitar outro número        |
+
+### Fluxo de conexão por número (instâncias mobile)
+
+| Chave             | Padrão                                                                              | Descrição                                |
+| ----------------- | ----------------------------------------------------------------------------------- | ---------------------------------------- |
+| `mVerifying`      | Verificando número…                                                                 | Verificando o número informado           |
+| `mMethodHint`     | Como quer receber o código?                                                         | Escolha do método de envio do código     |
+| `mSms`            | SMS                                                                                 | Opção de receber por SMS                 |
+| `mCall`           | Ligação                                                                             | Opção de receber por ligação             |
+| `mWhatsapp`       | WhatsApp                                                                            | Opção de receber pelo WhatsApp           |
+| `mSending`        | Enviando…                                                                           | Enviando o código                        |
+| `mCodeHint`       | Digite o código que você recebeu                                                    | Instrução para digitar o código recebido |
+| `mWaOldHint`      | Abra o WhatsApp no seu celular — você vai receber o código por lá. Digite-o abaixo. | Instrução do método WhatsApp             |
+| `mConfirm`        | Confirmar                                                                           | Botão de confirmar o código              |
+| `mConfirming`     | Confirmando…                                                                        | Estado enquanto confirma                 |
+| `mCaptchaHint`    | Digite os caracteres da imagem                                                      | Instrução do captcha                     |
+| `mSecurityHint`   | Digite seu PIN (verificação em duas etapas)                                         | Instrução do PIN de duas etapas          |
+| `mForgotPin`      | Esqueci o PIN                                                                       | Link de recuperação de PIN               |
+| `mConfirmOnPhone` | Confirme no seu celular e toque em Confirmar                                        | Confirmação no aparelho                  |
+| `mError`          | Algo deu errado. Tente novamente.                                                   | Erro genérico                            |
+| `mWrongCode`      | Código incorreto. Tente de novo.                                                    | Código digitado incorreto                |
+| `mBlocked`        | Este número está bloqueado pelo WhatsApp.                                           | Número bloqueado                         |
+| `mUnblock`        | Solicitar desbloqueio                                                               | Botão para solicitar desbloqueio         |
+| `mNoRoutes`       | Não conseguimos enviar o código agora. Verifique o número e tente outro método.     | Nenhuma rota de envio disponível         |
+| `mRateLimit`      | Muitas tentativas. Aguarde um pouco antes de tentar de novo.                        | Limite de tentativas atingido            |
+| `mBanned`         | Este número está banido.                                                            | Número banido                            |
+| `mBannedText`     | Descreva por que este número deve ser desbanido:                                    | Texto do formulário de apelação          |
+| `mSend`           | Enviar                                                                              | Botão de enviar a apelação               |
+| `mInReview`       | Seu pedido está em análise pelo WhatsApp.                                           | Apelação em análise                      |
+| `mPinSent`        | Enviamos as instruções de recuperação do PIN.                                       | Instruções de recuperação enviadas       |
+| `mPhoneOffline`   | Celular offline — as mensagens podem atrasar.                                       | Aviso de celular offline                 |
+
+### Migração de sessão
+
+| Chave          | Padrão                                                              | Descrição                           |
+| -------------- | ------------------------------------------------------------------- | ----------------------------------- |
+| `migrateOr`    | ou                                                                  | Separador antes do link de migração |
+| `migrateLink`  | Clique aqui e migre uma conexão do WhatsApp Web já conectada pra cá | Botão que abre o fluxo de migração  |
+| `migrateHint`  | Migre sua sessão do WhatsApp Web com a extensão. Use este código:   | Instrução da tela de migração       |
+| `migrateStep1` | Instale a extensão **Z-API Conector**                               | Passo 1 da migração                 |
+| `migrateStep2` | Abra o **web.whatsapp.com** já conectado no seu computador          | Passo 2 da migração                 |
+| `migrateStep3` | Abra a extensão e digite o **código acima**                         | Passo 3 da migração                 |
+| `migrateBack`  | Voltar                                                              | Voltar da tela de migração          |
+
+### Conectado
+
+| Chave            | Padrão         | Descrição                        |
+| ---------------- | -------------- | -------------------------------- |
+| `connectedTitle` | Conectado      | Título da tela de sucesso        |
+| `disconnect`     | Desconectar    | Botão de desconectar a instância |
+| `disconnecting`  | Desconectando… | Estado enquanto desconecta       |
+
+### Autenticação por chave de acesso (extensão)
+
+| Chave                | Padrão                                                                      | Descrição                                |
+| -------------------- | --------------------------------------------------------------------------- | ---------------------------------------- |
+| `challengeText`      | Confirme a autenticação no seu dispositivo para conectar esta instância.    | Instrução da tela de autenticação        |
+| `challengeButton`    | Resolver autenticação                                                       | Botão para resolver a autenticação       |
+| `challengeSolving`   | Autenticando…                                                               | Estado enquanto autentica                |
+| `challengeCancel`    | Cancelar                                                                    | Cancelar a autenticação                  |
+| `installTitle`       | Autenticação por chave de acesso                                            | Título da tela de instalação da extensão |
+| `installText`        | A extensão confirma sua biometria neste dispositivo para conectar.          | Descrição da extensão                    |
+| `installStep1`       | Instale a extensão e adicione ao seu navegador                              | Passo 1 da instalação                    |
+| `installStep2`       | Volte para esta janela — a conexão segue **automaticamente**                | Passo 2 da instalação                    |
+| `installButton`      | Instalar extensão                                                           | Botão genérico de instalar               |
+| `installChrome`      | Instalar no Chrome                                                          | Botão de instalar no Chrome              |
+| `installFirefox`     | Instalar no Firefox                                                         | Botão de instalar no Firefox             |
+| `unsupportedBrowser` | Abra esta página no Chrome ou no Firefox para conectar com chave de acesso. | Aviso em navegador sem suporte           |
+
+---
+
+## Teste no playground
+
+Abra o [playground do SDK](https://app.z-api.io/demo.html) para gerar um token, ajustar tema, idioma e métodos, e ver o conector real funcionando.
