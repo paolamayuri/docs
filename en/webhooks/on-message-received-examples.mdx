@@ -2083,6 +2083,8 @@ In addition to messages, the webhook also receives call, group, and account noti
   "code": null,
   "callDirection": "incoming",
   "isVideo": false
+  "callDuration": 25,
+  "callRecordingUrl": "https://www.audioSample.mp3"
 }
 ```
 </Accordion>
@@ -2397,79 +2399,79 @@ Below are the notification types and their meanings.
 ### Notifications (webhook events)
 
 <ResponseField name="GROUP_CREATE" type="string">
-Group was created
+  Group was created
 </ResponseField>
 
 <ResponseField name="GROUP_CHANGE_SUBJECT" type="string">
-Group subject was changed
+  Group subject was changed
 </ResponseField>
 
 <ResponseField name="GROUP_CHANGE_DESCRIPTION" type="string">
-Group description was changed
+  Group description was changed
 </ResponseField>
 
 <ResponseField name="GROUP_CHANGE_ICON" type="string">
-Group icon was changed
+  Group icon was changed
 </ResponseField>
 
 <ResponseField name="GROUP_PARTICIPANT_PROMOTE" type="string">
-A participant was promoted to admin
+  A participant was promoted to admin
 </ResponseField>
 
 <ResponseField name="GROUP_PARTICIPANT_DEMOTE" type="string">
-A participant was demoted from admin
+  A participant was demoted from admin
 </ResponseField>
 
 <ResponseField name="GROUP_PARTICIPANT_LEAVE" type="string">
-Participant left the group
+  Participant left the group
 </ResponseField>
 
 <ResponseField name="GROUP_PARTICIPANT_ADD" type="string">
-Participant was added to the group
+  Participant was added to the group
 </ResponseField>
 
 <ResponseField name="GROUP_PARTICIPANT_REMOVE" type="string">
-Participant was removed from the group
+  Participant was removed from the group
 </ResponseField>
 
 <ResponseField name="GROUP_PARTICIPANT_INVITE" type="string">
-Participant accepted the invite link and joined the group
+  Participant accepted the invite link and joined the group
 </ResponseField>
 
 <ResponseField name="CALL_MISSED_VOICE" type="string">
-Missed voice call
+  Missed voice call
 </ResponseField>
 
 <ResponseField name="CALL_MISSED_VIDEO" type="string">
-Missed video call
+  Missed video call
 </ResponseField>
 
 <ResponseField name="E2E_ENCRYPTED" type="string">
-Message indicating end-to-end encryption
+  Message indicating end-to-end encryption
 </ResponseField>
 
 <ResponseField name="CIPHERTEXT" type="string">
-Message protected by encryption
+  Message protected by encryption
 </ResponseField>
 
 <ResponseField name="BLUE_MSG_SELF_PREMISE_UNVERIFIED" type="string">
-Business account not verified by WhatsApp
+  Business account not verified by WhatsApp
 </ResponseField>
 
 <ResponseField name="BLUE_MSG_SELF_PREMISE_VERIFIED" type="string">
-Business account verified by WhatsApp
+  Business account verified by WhatsApp
 </ResponseField>
 
 <ResponseField name="BIZ_MOVE_TO_CONSUMER_APP" type="string">
-Business account changed to personal account
+  Business account changed to personal account
 </ResponseField>
 
 <ResponseField name="REVOKE" type="string">
-Message deleted
+  Message deleted
 </ResponseField>
 
 <ResponseField name="WA_OLD_REGISTRATION" type="string">
-Sending the confirmation code for number registration
+  Sending the confirmation code for number registration
 </ResponseField>
 
 ---
