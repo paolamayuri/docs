@@ -2078,7 +2078,9 @@ Além das mensagens, o webhook também recebe notificações de chamadas, grupos
   "callId": "F44E0E2011E7C784BB9A4AC11749C436",
   "code": null,
   "callDirection": "incoming",
-  "isVideo": false
+  "isVideo": false,
+  "callDuration": 25,  //Segundos
+  "callRecordingUrl": "https://www.exemploDeAudio.mp3"
 }
 ```
 </Accordion>
@@ -2393,79 +2395,79 @@ Abaixo estão listados os tipos de notificações e seus significados.
 ### Notificações (eventos via webhook)
 
 <ResponseField name="GROUP_CREATE" type="string">
-Grupo foi criado
+  Grupo foi criado
 </ResponseField>
 
 <ResponseField name="GROUP_CHANGE_SUBJECT" type="string">
-Nome do grupo foi alterado
+  Nome do grupo foi alterado
 </ResponseField>
 
 <ResponseField name="GROUP_CHANGE_DESCRIPTION" type="string">
-Descrição do grupo foi alterada
+  Descrição do grupo foi alterada
 </ResponseField>
 
 <ResponseField name="GROUP_CHANGE_ICON" type="string">
-Foto do grupo foi alterada
+  Foto do grupo foi alterada
 </ResponseField>
 
 <ResponseField name="GROUP_PARTICIPANT_PROMOTE" type="string">
-Participante foi promovido a administrador
+  Participante foi promovido a administrador
 </ResponseField>
 
 <ResponseField name="GROUP_PARTICIPANT_DEMOTE" type="string">
-Participante foi removido da função de administrador
+  Participante foi removido da função de administrador
 </ResponseField>
 
 <ResponseField name="GROUP_PARTICIPANT_LEAVE" type="string">
-Participante saiu do grupo
+  Participante saiu do grupo
 </ResponseField>
 
 <ResponseField name="GROUP_PARTICIPANT_ADD" type="string">
-Participante foi adicionado ao grupo
+  Participante foi adicionado ao grupo
 </ResponseField>
 
 <ResponseField name="GROUP_PARTICIPANT_REMOVE" type="string">
-Participante foi removido do grupo
+  Participante foi removido do grupo
 </ResponseField>
 
 <ResponseField name="GROUP_PARTICIPANT_INVITE" type="string">
-Participante aceitou o link de convite e entrou no grupo
+  Participante aceitou o link de convite e entrou no grupo
 </ResponseField>
 
 <ResponseField name="CALL_MISSED_VOICE" type="string">
-Chamada de voz perdida
+  Chamada de voz perdida
 </ResponseField>
 
 <ResponseField name="CALL_MISSED_VIDEO" type="string">
-Chamada de vídeo perdida
+  Chamada de vídeo perdida
 </ResponseField>
 
 <ResponseField name="E2E_ENCRYPTED" type="string">
-Mensagem informando criptografia de ponta a ponta
+  Mensagem informando criptografia de ponta a ponta
 </ResponseField>
 
 <ResponseField name="CIPHERTEXT" type="string">
-Mensagem protegida por criptografia
+  Mensagem protegida por criptografia
 </ResponseField>
 
 <ResponseField name="BLUE_MSG_SELF_PREMISE_UNVERIFIED" type="string">
-Conta comercial não verificada pelo WhatsApp
+  Conta comercial não verificada pelo WhatsApp
 </ResponseField>
 
 <ResponseField name="BLUE_MSG_SELF_PREMISE_VERIFIED" type="string">
-Conta comercial verificada pelo WhatsApp
+  Conta comercial verificada pelo WhatsApp
 </ResponseField>
 
 <ResponseField name="BIZ_MOVE_TO_CONSUMER_APP" type="string">
-Conta comercial alterada para conta pessoal
+  Conta comercial alterada para conta pessoal
 </ResponseField>
 
 <ResponseField name="REVOKE" type="string">
-Mensagem apagada
+  Mensagem apagada
 </ResponseField>
 
 <ResponseField name="WA_OLD_REGISTRATION" type="string">
-Envio do código de confirmação para registro do número
+  Envio do código de confirmação para registro do número
 </ResponseField>
 
 ---
