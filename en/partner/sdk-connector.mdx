@@ -116,6 +116,8 @@ async function connect(instanceId) {
 | `locale`    | `"pt" \| "en" \| string`            | UI language. Auto-detected from the browser when omitted.                                                   |
 | `messages`  | `Partial<Messages>`                 | Override individual strings or translate to another language. See [Messages](#messages).                    |
 | `methods`   | `{ qr?, phone?, migrate? }`         | Which connection options to show. Each is `true` by default. See [Connection methods](#connection-methods). |
+| `showQueue` | `boolean`                           | Shows the queued-messages notice (with a clear option). Default `true`. See [Message queue](#message-queue). |
+| `onSubscribe` | `() => void`                      | Callback invoked when the user clicks "Subscribe again" on the expired-instance screen. See [Expired instance](#expired-instance). |
 | `container` | `string \| HTMLElement`             | Where to mount the modal. Default: `document.body`.                                                         |
 
 ---
@@ -194,6 +196,37 @@ ZAPIConnector.open({ token, methods: { phone: false, migrate: false } });
 
 ---
 
+## Message queue
+
+An instance may have messages **in the queue** (piled up while it was disconnected). On connect, they're all sent at once. That's why, **before connecting**, the modal shows how many messages are queued and offers a **clear** option — avoiding a burst of messages the moment it connects.
+
+The count refreshes automatically every 10 seconds while the modal is open. To hide this notice, pass `showQueue: false`:
+
+```js
+ZAPIConnector.open({ token, showQueue: false });
+```
+
+---
+
+## Expired instance
+
+If the instance's usage period ends, WhatsApp stops accepting the connection. In that case, instead of a QR code that won't load, the modal shows an **expired instance** screen.
+
+Re-subscribing is a **backend** action (billing), so the **"Subscribe again"** button only appears if you pass an `onSubscribe` callback. When clicked, the modal calls your callback — where you kick off your subscription flow (call your backend, redirect to your pricing page, etc.):
+
+```js
+ZAPIConnector.open({
+  token,
+  onSubscribe: () => {
+    window.location.href = "/pricing";
+  },
+});
+```
+
+Without `onSubscribe`, the screen shows only the expiration message. In both cases, the `status` event fires with `"expired"`. If the instance is re-subscribed while the modal is still open, it reconnects on its own.
+
+---
+
 ## Events
 
 Track the connection lifecycle with `on` / `off`:
@@ -210,7 +243,7 @@ ZAPIConnector.off("connected", handler);
 | `connected`    | `{ phone? }`  | the channel connected                                      |
 | `disconnected` | `{ reason? }` | it dropped or was disconnected                             |
 | `qr`           | `{ base64 }`  | a new QR code was rendered                                 |
-| `status`       | `{ status }`  | status changed (`"qr"`, `"connected"` or `"disconnected"`) |
+| `status`       | `{ status }`  | status changed (`"qr"`, `"connected"`, `"disconnected"` or `"expired"`) |
 | `error`        | `{ error }`   | an error occurred                                          |
 | `close`        | –             | the user closed the modal                                  |
 
@@ -326,6 +359,23 @@ Every string in the modal can be overridden via `messages`. Below, each key, its
 | `installChrome`      | Install on Chrome                                                   | Install-on-Chrome button          |
 | `installFirefox`     | Install on Firefox                                                  | Install-on-Firefox button         |
 | `unsupportedBrowser` | Open this page in Chrome or Firefox to connect with a passkey.      | Warning on an unsupported browser |
+
+### Message queue
+
+| Key              | Default               | Description                                    |
+| ---------------- | --------------------- | ---------------------------------------------- |
+| `queueCountOne`  | message in the queue  | Label when there is 1 message in the queue     |
+| `queueCountMany` | messages in the queue | Label when there are several messages          |
+| `queueClear`     | Clear queue           | Button to clear the queue                       |
+| `queueClearing`  | Clearing…             | State while clearing the queue                  |
+
+### Expired instance
+
+| Key             | Default                                                                | Description                            |
+| --------------- | --------------------------------------------------------------------- | -------------------------------------- |
+| `expiredTitle`  | Instance expired                                                      | Expired-instance screen title          |
+| `expiredText`   | This instance's usage period has ended. Subscribe again to reconnect. | Screen text                            |
+| `expiredButton` | Subscribe again                                                       | Button (only shown with `onSubscribe`) |
 
 ---
 

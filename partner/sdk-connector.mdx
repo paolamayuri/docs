@@ -116,6 +116,8 @@ async function conectar(instanceId) {
 | `locale`    | `"pt" \| "en" \| string`            | Idioma da interface. Detectado do navegador quando omitido.                                                         |
 | `messages`  | `Partial<Messages>`                 | Sobrescreve textos individuais ou traduz para outro idioma. Veja [Mensagens](#mensagens).                           |
 | `methods`   | `{ qr?, phone?, migrate? }`         | Quais opções de conexão exibir. Cada uma é `true` por padrão. Veja [Métodos de conexão](#métodos-de-conexão).       |
+| `showQueue` | `boolean`                           | Mostra o aviso de mensagens na fila (com opção de limpar). Padrão `true`. Veja [Fila de mensagens](#fila-de-mensagens). |
+| `onSubscribe` | `() => void`                      | Callback chamado ao clicar em "Assinar novamente" na tela de instância expirada. Veja [Instância expirada](#instância-expirada). |
 | `container` | `string \| HTMLElement`             | Onde montar o modal. Padrão: `document.body`.                                                                       |
 
 ---
@@ -194,6 +196,37 @@ ZAPIConnector.open({ token, methods: { phone: false, migrate: false } });
 
 ---
 
+## Fila de mensagens
+
+Uma instância pode ter mensagens **na fila** (acumuladas enquanto esteve desconectada). Ao conectar, todas são enviadas de uma vez. Por isso, **antes de conectar**, o modal mostra quantas mensagens estão na fila e oferece a opção de **limpar** — evitando um disparo em massa no momento da conexão.
+
+A contagem é atualizada automaticamente a cada 10 segundos enquanto o modal está aberto. Para esconder esse aviso, passe `showQueue: false`:
+
+```js
+ZAPIConnector.open({ token, showQueue: false });
+```
+
+---
+
+## Instância expirada
+
+Se o período de uso da instância acabar, o WhatsApp deixa de aceitar a conexão. Nesse caso, em vez de um QR Code que não carrega, o modal mostra uma tela de **instância expirada**.
+
+Reassinar é uma ação do **seu backend** (billing), então o botão **"Assinar novamente"** só aparece se você passar um callback `onSubscribe`. Ao clicar, o modal chama o seu callback — nele você dispara o seu fluxo de assinatura (chamar o seu backend, redirecionar para a página de planos, etc.):
+
+```js
+ZAPIConnector.open({
+  token,
+  onSubscribe: () => {
+    window.location.href = "/planos";
+  },
+});
+```
+
+Sem `onSubscribe`, a tela mostra apenas a mensagem de expiração. Em ambos os casos, o evento `status` é emitido com `"expired"`. Se a instância for reassinada com o modal ainda aberto, ele se reconecta sozinho.
+
+---
+
 ## Eventos
 
 Acompanhe o ciclo de vida da conexão com `on` / `off`:
@@ -210,7 +243,7 @@ ZAPIConnector.off("connected", handler);
 | `connected`    | `{ phone? }`  | o canal conectou                                           |
 | `disconnected` | `{ reason? }` | caiu ou foi desconectado                                   |
 | `qr`           | `{ base64 }`  | um novo QR Code foi renderizado                            |
-| `status`       | `{ status }`  | o status mudou (`"qr"`, `"connected"` ou `"disconnected"`) |
+| `status`       | `{ status }`  | o status mudou (`"qr"`, `"connected"`, `"disconnected"` ou `"expired"`) |
 | `error`        | `{ error }`   | ocorreu um erro                                            |
 | `close`        | –             | o usuário fechou o modal                                   |
 
@@ -326,6 +359,23 @@ Todo texto do modal pode ser sobrescrito por `messages`. Abaixo, cada chave, o v
 | `installChrome`      | Instalar no Chrome                                                          | Botão de instalar no Chrome              |
 | `installFirefox`     | Instalar no Firefox                                                         | Botão de instalar no Firefox             |
 | `unsupportedBrowser` | Abra esta página no Chrome ou no Firefox para conectar com chave de acesso. | Aviso em navegador sem suporte           |
+
+### Fila de mensagens
+
+| Chave            | Padrão            | Descrição                                    |
+| ---------------- | ----------------- | -------------------------------------------- |
+| `queueCountOne`  | mensagem na fila  | Rótulo quando há 1 mensagem na fila          |
+| `queueCountMany` | mensagens na fila | Rótulo quando há várias mensagens na fila    |
+| `queueClear`     | Limpar fila       | Botão para limpar a fila                     |
+| `queueClearing`  | Limpando…         | Estado enquanto limpa a fila                 |
+
+### Instância expirada
+
+| Chave           | Padrão                                                                      | Descrição                             |
+| --------------- | -------------------------------------------------------------------------- | ------------------------------------- |
+| `expiredTitle`  | Instância expirada                                                         | Título da tela de instância expirada  |
+| `expiredText`   | O período de uso desta instância acabou. Assine novamente para reconectar. | Texto da tela                         |
+| `expiredButton` | Assinar novamente                                                          | Botão (aparece só com `onSubscribe`)  |
 
 ---
 
