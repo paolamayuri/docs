@@ -25,7 +25,27 @@ Retorna o QRCode em formato de imagem base64, para que você exiba em um compone
 
 ### 200
 
-Retorna a imagem do QRCode em base64.
+<Warning>
+Pode ser retornada a imagem do QR Code em Base64 ou, em dispositivos que solicitam a **[Chave de Acesso](/tips/extension-guide)**, o objeto **Challenge** para dar continuidade ao processo de autenticação.
+</Warning>
+
+**Exemplo de retorno para dispositivos que precisam da [Chave de Acesso](/tips/extension-guide)**
+```json
+{
+  "challenge": {
+    "allowCredentials": [],
+    "challenge": "V275tRcRUu2XjHiF9a6GTKFaZj8G4W_EEuRwdW5zCAM",
+    "extensions": {
+      "uvm": true
+    },
+    "rpId": "whatsapp.com",
+    "timeout": 600000,
+    "userVerification": "required"
+  }
+}
+```
+
+Em casos desse retorno, é necessário concluir a autenticação que foi solicitada por meio do Challenge, para isso temos o endpoint para **[Concluir o Challenge](/instance/passkey-prologue)**
 
 ### 405
 

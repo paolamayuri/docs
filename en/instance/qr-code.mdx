@@ -25,11 +25,34 @@ Returns the QRCode bytes so you can render it in a compatible component.
 
 ### 200
 
+<Warning>
+The QR Code may be returned in bytes, or, on devices that require the **[Passkey](/en/tips/extension-guide)**, the **Challenge** object to continue the authentication process.
+</Warning>
+
+**Example response for the QR Code bytes**
 ```json
 {
   "value": "data:image/png;base64,iVBOR..."
 }
 ```
+
+**Example response for devices that require the [Passkey](/en/tips/extension-guide)**
+```json
+{
+  "challenge": {
+    "allowCredentials": [],
+    "challenge": "V275tRcRUu2XjHiF9a6GTKFaZj8G4W_EEuRwdW5zCAM",
+    "extensions": {
+      "uvm": true
+    },
+    "rpId": "whatsapp.com",
+    "timeout": 600000,
+    "userVerification": "required"
+  }
+}
+```
+
+In cases where this response is returned, it is necessary to complete the authentication requested via the Challenge. For this, we have the **[Complete the Challenge](/en/instance/passkey-prologue)** endpoint.
 
 ### 405
 

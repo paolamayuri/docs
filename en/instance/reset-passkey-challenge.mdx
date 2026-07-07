@@ -1,0 +1,73 @@
+---
+title: "Reset the Challenge"
+api: "POST /instances/{instanceId}/token/{token}/reset-passkey-challenge"
+description: "Resets the current passkey challenge, allowing a new QR Code to be generated"
+---
+import InstanceId from '/snippets/en/params/instance-id.mdx'
+import Token from '/snippets/en/params/token.mdx'
+
+
+## Overview
+
+<Warning>
+On some devices, WhatsApp has started requiring an additional verification step when attempting to connect to WhatsApp Web, called **[Passkey](/en/tips/extension-guide)**. Because of this, devices that try to read the QR Code via the API may receive a **Challenge** in return.
+</Warning>
+
+This method is part of the instance connection flow via **Passkey (WebAuthn)**. It is used when the client wants to generate a **new** QR Code — for example, to scan it with a different device.
+
+When this endpoint is called, the current challenge is **reset**. On the next call to the **QR Code** endpoint, a new QR Code is generated.
+
+<Note>
+This endpoint invalidates the current passkey flow. After a successful call, the **qr-code** endpoint must be called again to obtain the new QR Code.
+</Note>
+
+---
+
+## Attributes
+### Required
+
+<InstanceId />
+<Token />
+
+
+---
+
+## Response
+
+### 200
+
+Returns the result of the processing by the instance's middleware. There are two possible variations:
+
+**Success — challenge reset:**
+```json
+{ "success": true }
+```
+
+**Failure — unable to restart the instance:**
+```json
+{ "success": false, "error": "Failed to restart instance after challenge reset" }
+```
+
+<Note>
+On success, call the **qr-code** endpoint again to obtain the new QR Code.
+</Note>
+
+### 400
+
+Returned in the following cases:
+
+- **Instance not found** for the `instanceId` + `token` pair:
+```json
+{ "error": "Instance not found", "value": null }
+```
+- Security validation failure (`Client-Token` / invalid IP)
+- Instance in a state that does not allow the operation (e.g., no active subscription)
+- Communication error with the middleware (IO / timeout)
+
+### 405
+
+In this case, make sure you are sending the correct method specification, i.e., check whether you sent a POST or GET request as specified at the beginning of this topic.
+
+### 415
+
+If you receive a 415 error, make sure to add the "Content-Type" of the object you are sending to the request headers, most commonly "application/json".

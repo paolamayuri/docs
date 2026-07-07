@@ -10,6 +10,10 @@ Assim como no WhatsApp Web para se conectar à Z-API é necessário ler um QRCod
 - Se conectar através do nosso painel de administrador
 - Disponibilizar a experiência dentro da sua própria aplicação
 
+<Warning>
+  Devido a novas atualizações feitas no WhatsApp, em alguns dispositivos, o WhatsApp passou a exigir uma verificação adicional ao tentar conectar ao WhatsApp Web, que seria a **[Chave de Acesso](/en/tips/extension-guide)**. Quando eles realizar a conexão poderá retornar um **[Challange](/en/instance/passkey-prologue)** para ser finalizado.
+</Warning>
+
 <Tip>
 Crie um método com intervalos entre 10 e 20 segundos para chamar a API e pegar o novo QRCode. Caso o usuário não leia o QRCode após 3 chamadas, interrompa o fluxo e exiba um botão para o usuário solicitar um novo QRCode. Isso evita chamadas desnecessárias ao WhatsApp.
 </Tip>

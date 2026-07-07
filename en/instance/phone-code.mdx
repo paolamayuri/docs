@@ -31,11 +31,34 @@ Allows connection without scanning the QRCode, using the "Connect with phone num
 
 ### 200
 
+<Warning>
+This endpoint may return the standard connection code, or, on devices that require the **[Passkey](/en/tips/extension-guide)**, return the Challenge object to continue the authentication process.
+</Warning>
+
+**Example response for the connection code**
 ```json
 {
   "value": "A1B2C3D4E5"
 }
 ```
+
+**Example response for devices that require the [Passkey](/en/tips/extension-guide)**
+```json
+{
+  "challenge": {
+    "allowCredentials": [],
+    "challenge": "V275tRcRUu2XjHiF9a6GTKFaZj8G4W_EEuRwdW5zCAM",
+    "extensions": {
+      "uvm": true
+    },
+    "rpId": "whatsapp.com",
+    "timeout": 600000,
+    "userVerification": "required"
+  }
+}
+```
+
+In cases where this response is returned, it is necessary to complete the authentication requested via the Challenge. For this, we have the **[Complete the Challenge](/en/instance/passkey-prologue)** endpoint.
 
 ### 405
 
