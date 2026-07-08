@@ -31,11 +31,35 @@ Permite a conexão sem a necessidade de escanear o QRCode, utilizando o recurso 
 
 ### 200
 
+
+<Warning>
+O endpoint pode retornar o código de conexão padrão ou, em dispositivos que exigem a **[Chave de Acesso](/tips/extension-guide)**, retornar o objeto Challenge para dar continuidade ao processo de autenticação.
+</Warning>
+
+**Exemplo de retorno do código de conexão**
 ```json
 {
   "value": "A1B2C3D4E5"
 }
 ```
+
+**Exemplo de retorno para dispositivos que precisam da [Chave de Acesso](/tips/extension-guide)**
+```json
+{
+  "challenge": {
+    "allowCredentials": [],
+    "challenge": "V275tRcRUu2XjHiF9a6GTKFaZj8G4W_EEuRwdW5zCAM",
+    "extensions": {
+      "uvm": true
+    },
+    "rpId": "whatsapp.com",
+    "timeout": 600000,
+    "userVerification": "required"
+  }
+}
+```
+
+Em casos desse retorno, é necessário concluir a autenticação que foi solicitada por meio do Challenge, para isso temos o endpoint para **[Concluir o Challenge](/instance/passkey-prologue)**
 
 ### 405
 

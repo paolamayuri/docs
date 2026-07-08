@@ -1,0 +1,70 @@
+---
+title: "Resetar o Challenge"
+api: "POST /instances/{instanceId}/token/{token}/reset-passkey-challenge"
+description: "Reseta o challenge de passkey vigente, permitindo a geração de um novo QR Code"
+---
+import InstanceId from '/snippets/pt/params/instance-id.mdx'
+import Token from '/snippets/pt/params/token.mdx'
+
+
+## Conceituação
+
+<Warning>
+Em alguns dispositivos, o WhatsApp passou a exigir uma verificação adicional ao tentar conectar ao WhatsApp Web, chamada de **[Chave de Acesso (Passkey)](/tips/extension-guide)**. Devido a isso, esses dispositivos que tentar ler o QR Code via API podem ter o retorno do **Challenge**.
+</Warning>
+
+Este método faz parte do fluxo de conexão da instância via **Passkey (WebAuthn)**. Ele é utilizado quando o cliente deseja gerar um **novo** QR Code — por exemplo, para escanear com outro dispositivo.
+
+Ao chamar este endpoint, o challenge atual é **resetado**. Na próxima chamada ao endpoint de **QR Code**, um novo QR Code é gerado.
+
+<Note>
+Este endpoint invalida o fluxo de passkey vigente. Após o sucesso da chamada, é necessário chamar novamente o endpoint de **qr-code** para obter o novo QR Code.
+</Note>
+
+---
+
+## Atributos
+### Obrigatórios
+
+<InstanceId />
+<Token />
+
+
+---
+
+## Response
+
+### 200
+
+Retorna o resultado do processamento da instância. Existem duas variações possíveis:
+
+**Sucesso — challenge resetado:**
+```json
+{ "success": true }
+```
+
+**Falha — não foi possível reiniciar a instância:**
+```json
+{ "success": false, "error": "Failed to restart instance after challenge reset" }
+```
+
+<Note>
+Em caso de sucesso, chame novamente o endpoint de **qr-code** para obter o novo QR Code.
+</Note>
+
+### 400
+
+Retornado nos seguintes casos:
+
+- **Instância não encontrada** para o par `instanceId` + `token`:
+```json
+{ "error": "Instance not found", "value": null }
+```
+
+### 405
+
+Neste caso certifique que esteja enviando corretamente a especificação do método, ou seja verifique se você enviou o POST ou GET conforme especificado no início deste tópico.
+
+### 415
+
+Caso você receba um erro 415, certifique de adicionar na headers da requisição o "Content-Type" do objeto que você está enviando, em sua grande maioria "application/json".

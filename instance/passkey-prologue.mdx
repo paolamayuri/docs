@@ -1,0 +1,140 @@
+---
+title: "Concluir o Challenge"
+api: "POST /instances/{instanceId}/token/{token}/passkey-prologue"
+description: "Envia o resultado da resolução do passkey (assertion WebAuthn) para concluir a conexão da instância"
+---
+import InstanceId from '/snippets/pt/params/instance-id.mdx'
+import Token from '/snippets/pt/params/token.mdx'
+
+
+## Conceituação
+
+<Warning>
+Em alguns dispositivos, o WhatsApp passou a exigir uma verificação adicional ao tentar conectar ao WhatsApp, chamada de **[Chave de Acesso (Passkey)](/tips/extension-guide)**. Devido a isso, tais dispositivos, quando tentarem ler o QR Code podem receber o retorno do **Challenge**.
+</Warning>
+
+Este método faz parte do fluxo de conexão da instância via **[Passkey (WebAuthn)](/tips/extension-guide)**, sendo a etapa final desse processo:
+
+1. O endpoint de QR Code é chamado e retorna um `challenge`.
+2. Esse challenge é resolvido no dispositivo / [autenticador](/tips/extension-guide) (procedimento feito fora do Z-API, e que não depende da nossa API).
+3. O resultado dessa resolução (a **assertion WebAuthn**) é enviado para este endpoint, para que a instância conclua a conexão.
+
+<Note>
+A resolução do challenge acontece diretamente entre o dispositivo do usuário e o autenticador (Passkey), fora do ecossistema Z-API. Este endpoint apenas recebe o resultado já processado.
+
+Pensando nessa nova autenticação do WhatsApp, o Z-API criou uma extensão chamada **[Z-API Connector](/tips/extension-guide)**, justamente para facilitar essa validação da Chave de Acesso.
+</Note>
+
+---
+
+## Atributos
+### Obrigatórios
+
+<InstanceId />
+<Token />
+
+### Obrigatórios
+
+<ParamField body="id" type="string" required>
+  Identificador da credencial gerada pelo autenticador
+</ParamField>
+
+<ParamField body="rawId" type="string" required>
+  Identificador bruto (raw) da credencial
+</ParamField>
+
+<ParamField body="type" type="string" required>
+  Tipo da credencial. Sempre "public-key"
+</ParamField>
+
+<ParamField body="response" type="object" required>
+  Dados da assinatura WebAuthn retornados pelo autenticador
+  <Expandable title="Propriedades do response">
+    <ParamField body="authenticatorData" type="string" required>
+      Dados do autenticador, codificados em base64
+    </ParamField>
+    <ParamField body="clientDataJSON" type="string" required>
+      Dados do cliente relativos à assertion, codificados em base64
+    </ParamField>
+    <ParamField body="signature" type="string" required>
+      Assinatura gerada pelo autenticador, codificada em base64
+    </ParamField>
+    <ParamField body="userHandle" type="string">
+      Identificador do usuário associado à credencial, quando aplicável
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+### Opcionais
+
+<ParamField body="clientExtensionResults" type="object">
+  Extensões do cliente retornadas pelo autenticador
+  <Expandable title="Propriedades do clientExtensionResults">
+    <ParamField body="uvm" type="array">
+      Métodos de verificação de usuário utilizados durante a assertion
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+---
+
+## Request Body
+
+```json
+{
+  "id": "...",
+  "rawId": "...",
+  "type": "public-key",
+  "response": {
+    "authenticatorData": "...",
+    "clientDataJSON": "...",
+    "signature": "...",
+    "userHandle": null
+  },
+  "clientExtensionResults": { "uvm": [] }
+}
+```
+
+---
+
+## Response
+
+### 200
+
+Retorna o resultado do processamento da assertion pelo middleware da instância. Existem três variações possíveis:
+
+**Sucesso:**
+```json
+{ "success": true }
+```
+
+**Falha — campos obrigatórios ausentes:**
+```json
+{ "success": false, "reason": "assertion (rawId + response) is required" }
+```
+
+**Falha — tipo de campo inválido:**
+```json
+{ "success": false, "reason": "assertion fields must be strings" }
+```
+
+<Note>
+Respostas com `success: false` indicam que o payload da assertion está malformado — é necessário corrigir o corpo enviado e reenviar. Não se trata de um erro de infraestrutura do Z-API.
+</Note>
+
+### 400
+
+Retornado nos seguintes casos:
+
+- **Instância não encontrada** para o par `instanceId` + `token`:
+```json
+{ "error": "Instance not found", "value": null }
+```
+
+### 405
+
+Neste caso certifique que esteja enviando corretamente a especificação do método, ou seja verifique se você enviou o POST ou GET conforme especificado no início deste tópico.
+
+### 415
+
+Caso você receba um erro 415, certifique de adicionar na headers da requisição o "Content-Type" do objeto que você está enviando, em sua grande maioria "application/json".
