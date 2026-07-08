@@ -10,7 +10,7 @@ import Token from '/snippets/pt/params/token.mdx'
 ## Conceituação
 
 <Warning>
-Em alguns dispositivos, o WhatsApp passou a exigir uma verificação adicional ao tentar conectar ao WhatsApp Web, chamada de **[Chave de Acesso (Passkey)](/tips/extension-guide)**. Devido a isso, esses dispositivos que tentar ler o QR Code via API podem ter o retorno do **Challenge**.
+Em alguns dispositivos, o WhatsApp passou a exigir uma verificação adicional ao tentar conectar ao WhatsApp, chamada de **[Chave de Acesso (Passkey)](/tips/extension-guide)**. Devido a isso, tais dispositivos, quando tentarem ler o QR Code podem receber o retorno do **Challenge**.
 </Warning>
 
 Este método faz parte do fluxo de conexão da instância via **[Passkey (WebAuthn)](/tips/extension-guide)**, sendo a etapa final desse processo:
@@ -130,9 +130,6 @@ Retornado nos seguintes casos:
 ```json
 { "error": "Instance not found", "value": null }
 ```
-- Falha nas validações de segurança (`Client-Token` / IP inválidos)
-- Instância em estado que não permite a operação (ex: sem assinatura ativa)
-- Erro de comunicação com o middleware (IO / timeout)
 
 ### 405
 

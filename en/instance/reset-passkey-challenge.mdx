@@ -36,7 +36,7 @@ This endpoint invalidates the current passkey flow. After a successful call, the
 
 ### 200
 
-Returns the result of the processing by the instance's middleware. There are two possible variations:
+Returns the result of the processing by the instance. There are two possible variations:
 
 **Success — challenge reset:**
 ```json
@@ -60,9 +60,6 @@ Returned in the following cases:
 ```json
 { "error": "Instance not found", "value": null }
 ```
-- Security validation failure (`Client-Token` / invalid IP)
-- Instance in a state that does not allow the operation (e.g., no active subscription)
-- Communication error with the middleware (IO / timeout)
 
 ### 405
 

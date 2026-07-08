@@ -36,7 +36,7 @@ Este endpoint invalida o fluxo de passkey vigente. Após o sucesso da chamada, �
 
 ### 200
 
-Retorna o resultado do processamento pelo middleware da instância. Existem duas variações possíveis:
+Retorna o resultado do processamento da instância. Existem duas variações possíveis:
 
 **Sucesso — challenge resetado:**
 ```json
@@ -60,9 +60,6 @@ Retornado nos seguintes casos:
 ```json
 { "error": "Instance not found", "value": null }
 ```
-- Falha nas validações de segurança (`Client-Token` / IP inválidos)
-- Instância em estado que não permite a operação (ex: sem assinatura ativa)
-- Erro de comunicação com o middleware (IO / timeout)
 
 ### 405
 
