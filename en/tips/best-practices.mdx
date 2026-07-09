@@ -4,165 +4,217 @@ title: Best Practices Guide for Using WhatsApp via API
 
 ## Introduction
 
-This guide provides practical recommendations to reduce the risk of blocks, restrictions, or bans when using WhatsApp through API integrations.
+This guide compiles practical recommendations to reduce the risk of blocks, restrictions, or bans when using WhatsApp through API integrations. Following these best practices is essential to maintaining the health of the number, improving message deliverability, and reducing the risk of blocks or restrictions from WhatsApp.
 
-It is important to note that there is no configuration that guarantees 100% protection against blocks, as WhatsApp’s policies and algorithms are internal and may change over time. The purpose of these practices is to reduce risks and improve the behavior of the number on the platform.
+It's important to note that there is no configuration that guarantees 100% protection against blocks, since WhatsApp's policies and algorithms are internal and can change over time. The goal of these practices is to reduce risk and improve the number's behavior on the platform.
 
-### 1. Maintain Natural Number Behavior
+### 1. Maintain natural number behavior
 
-One of the main factors analyzed by WhatsApp is how the number behaves.
+One of the main factors analyzed by WhatsApp is the number's behavior.
 
-Numbers that appear to be used only for automation or bulk messaging have a higher risk of restrictions.
-
-**Best practices:**
-
-- Use the number occasionally on a mobile device  
-- Have real conversations with contacts  
-- Participate in groups  
-- Send and reply to messages manually from time to time  
-- Avoid using the number exclusively for automation  
-
-This behavior helps WhatsApp identify the number as a real user rather than a purely automated system.
-
-### 2. Avoid High Volume Without Interaction
-
-WhatsApp evaluates the balance between:
-
-- Messages sent  
-- Messages received  
-
-When a number sends many messages and receives few replies, this behavior may be identified as spam.
+Numbers that appear to be used only for automation or bulk sending have a higher risk of restrictions.
 
 **Best practices:**
 
-- Encourage user responses  
-- Create messages that promote interaction  
-- Avoid constant one-way messaging  
+- Use the number occasionally on your phone
+- Have real conversations with contacts
+- Participate in groups
+- Send and reply to messages manually from time to time
+- Make voice calls and video calls
+- Send media (images, videos, audio, and documents)
+- Avoid having the number used only by automations
 
-### 3. Encourage Customer Interaction
+This behavior helps the platform identify the number as a real user rather than just an automated system, showing that it's being used legitimately by a real person or business.
 
-Creating opportunities for users to interact with messages helps reduce the risk of blocks.
+### 2. Avoid large sending volumes without interaction
+
+WhatsApp analyzes the balance between:
+
+- Messages sent
+- Messages received
+
+When a number sends a lot of messages but receives few replies, this behavior can be flagged as spam.
+
+**Best practices:**
+
+- Encourage user replies
+- Create messages that prompt interaction
+- Avoid constant one-way sending
+- Don't send more messages than the number typically receives
+
+**Limit daily volume:**
+
+As a reference, if the number receives about 50 messages a day, limit active sends to approximately 40 messages a day. Increase volume gradually as the number's history and reputation improve.
+
+### 3. Encourage customer interaction
+
+Creating opportunities for customers to interact with the message helps reduce the risk of blocks.
 
 **Strategies:**
 
-- Include questions in messages  
-- Offer reply buttons  
-- Ask for confirmation  
-- Request feedback  
-- Make it easy for users to respond  
+- Include questions in messages
+- Offer reply buttons
+- Ask for confirmation
+- Request feedback
+- Make it easy for customers to respond
 
-Each interaction helps maintain a healthy balance between sent and received messages.
+Every interaction received helps maintain the balance between sent and received messages.
 
-### 4. Provide an Opt-Out Option
+### 4. Offer an opt-out option
 
-Whenever possible, allow users to opt out of receiving messages.
+Whenever possible, let customers indicate they no longer want to receive messages.
 
 **Example:**
 
-“Reply STOP if you no longer wish to receive messages.”
+"If you'd like to stop receiving messages, reply STOP."
 
 **Benefits:**
 
-- Reduces spam reports  
-- Prevents direct blocking  
-- Improves contact list quality  
+- Reduces spam reports
+- Prevents direct blocks on the number
+- Improves the quality of the contact base
 
-### 5. Vary Message Content
+### 5. Vary message content
 
-Avoid sending the same message to all contacts.
+Avoid always sending the exact same text to every contact.
 
 Changing only variables such as:
 
-- Name  
-- Date  
-- Amount  
+- Name
+- Date
+- Amount
 
 is not enough.
 
 **Best practices:**
 
-- Create multiple variations of the same message  
-- Change sentence structure  
-- Vary vocabulary  
-- Use different communication formats  
-
-Instead of repeating the same message, use different ways to convey the same information.
-
-### 6. Use Intervals Between Messages
-
-Continuous and rapid sending increases the risk of blocks.
-
-**Best practices:**
-
-- Use intervals between messages  
-- Avoid very fast sending rates  
-- Distribute messages over time  
-
-In some observed cases, longer intervals (such as a few minutes between messages) provide better stability.
-
-### 7. Simulate Human Behavior
-
-Some practices help make message sending appear more natural.
-
-**Examples:**
-
-- Simulate typing indicators  
-- Avoid always responding instantly  
-- Apply delays between actions  
-
-This reduces the perception of full automation.
-
-### 8. Separate Numbers for Support and Campaigns
-
-A common strategy is to separate responsibilities across different numbers.
+- Create at least five different variations of the same message (e.g., Message A, B, C, D, and E), keeping the same goal but changing the structure and wording
+- Use randomization blocks in flows so contacts don't receive exactly the same content
+- Change sentence structure and vary vocabulary
+- Always introduce yourself at the start of the message, stating the sender's or company's name
+- Personalize communication using the contact's name whenever possible
+- Use different communication formats (text, image, audio, video)
 
 **Example:**
 
-- Number 1: Customer support  
-- Number 2: Notifications or campaigns  
+❌ "Hi! We have an offer for you."
 
-**Benefits:**
+✅ "Hi, John! This is the team at Company X. We'd like to share an opportunity that could help your business."
 
-- Protects the main business number  
-- Reduces impact in case of restrictions  
-- Improves operational organization  
+Instead of repeating the same message every time, use different ways of conveying the same information. This makes messages feel more natural, reduces repetitive content, and lowers the risk of WhatsApp identifying automated behavior.
 
-### 9. Maintain Number Warm-Up
+### 6. Use intervals between messages
 
-Newly activated or rarely used numbers may be more sensitive to restrictions.
+Continuous, rapid sending — or bulk sends with a large simultaneous volume — increases the risk of blocking.
 
 **Best practices:**
 
-- Start usage gradually  
-- Increase volume over time  
-- Maintain real conversations  
+- Use intervals between messages, spreading sends out over time
+- As a starting point, we recommend a minimum interval of 5 minutes between sends
+- As the number builds history and reputation, intervals can be gradually reduced
+- Avoid sending too quickly
 
-This process is known as number warm-up.
+In some observed cases, longer intervals (a few minutes between messages) show better stability. This reduces the risk of blocks, improves delivery rates, and makes the number's behavior more natural.
 
-For recently unbanned numbers, we recommend a warm-up period of 3 to 5 days before reconnecting to the API. During this time, simulate human behavior by interacting in groups, sending and receiving messages, saving contacts, and more.
+### 7. Simulate human behavior in messaging
 
-### 10. Understand That Blocks May Still Occur
+Some practices help make sending feel more natural.
 
-Even when following all best practices, blocks may still happen.
+**Examples:**
+
+- Simulate the typing indicator
+- Avoid always replying instantly
+- Apply delays between actions
+
+This type of behavior reduces the perception of full automation.
+
+### 8. Set appropriate operating hours
+
+Configure sends to occur within business hours or periods appropriate for your audience.
+
+**Avoid:**
+
+- Late night/early morning hours
+- Low-interaction time periods
+- Times that could cause discomfort to the recipient
+
+**Benefits:**
+
+- Better experience for contacts
+- Higher response rate
+- Lower likelihood of reports and blocks
+
+### 9. Separate support and campaign numbers
+
+A common strategy is to split functions across different numbers.
+
+**Example:**
+
+- Number 1: Customer support
+- Number 2: Sending notifications or campaigns
+
+**Benefits:**
+
+- Protects the company's main number
+- Reduces the impact if restrictions occur
+- Improves organization of channel usage
+
+### 10. Maintain number warm-up (maturation)
+
+Newly activated or lightly used numbers can be more sensitive to restrictions.
+
+**Best practices:**
+
+- Start usage gradually
+- Increase volume little by little
+- Maintain real conversations over time
+- Exchange messages manually with real contacts
+- Participate in WhatsApp groups
+- Share images, videos, and audio
+- Reply to conversations naturally
+
+This process is known as number warm-up or maturation.
+
+If the number has approximately 50 frequent conversations, we recommend starting with about 10 active sends per day and increasing gradually.
+
+For recently unbanned numbers, we recommend warming up for about 3 to 5 days before reconnecting to the API, simulating human behavior: interacting in groups, sending and receiving messages, saving contacts, and so on.
+
+### 11. Understand that blocks can occur even when following best practices
+
+Even when applying all the recommendations, blocks can still happen.
 
 This is because:
 
-- WhatsApp uses internal algorithms  
-- Policies may change  
-- User behavior also has an impact  
+- WhatsApp uses internal algorithms
+- Policies can change
+- User behavior also has an influence
 
-For this reason, the focus should always be on reducing risks and maintaining healthy platform usage.
+For this reason, the focus should always be on reducing risk and maintaining healthy platform usage.
+
+### Summary of key recommendations
+
+- Keep the number's behavior natural (real conversations, groups, calls)
+- Balance sent and received messages; don't send more than the number typically receives
+- Always offer an opt-out option
+- Create at least 5 variations of each message and use randomization in flows
+- Personalize messages with the contact's name and identify your business
+- Set intervals between sends (minimum recommended: 5 minutes)
+- Limit daily message volume and increase it gradually
+- Send messages at appropriate times, avoiding late night/early morning
+- Separate support numbers from campaign/broadcast numbers
+- Warm up (mature) the number before starting campaigns
 
 ### Conclusion
 
-Sustainable use of WhatsApp mainly depends on good communication practices and natural number behavior.
+Sustainable use of WhatsApp depends mainly on good communication practices and the number's behavior.
 
-The key pillars to reduce blocks are:
+The main pillars for reducing blocks are:
 
-- Natural number behavior  
-- Balance between sent and received messages  
-- Content variation  
-- Encouraging user interaction  
-- Responsible use of automation  
+- Natural number behavior
+- Balance between sending and receiving
+- Content variation
+- Encouraging customer interaction
+- Responsible use of automation
+- Number warm-up and maturation
 
-By following these practices, it is possible to significantly reduce the frequency of blocks and improve the stability of WhatsApp operations.
+By following these practices, it's possible to significantly reduce the frequency of blocks and improve the stability of WhatsApp operations.

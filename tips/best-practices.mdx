@@ -4,7 +4,7 @@ title: Guia de Boas Práticas para Uso do WhatsApp via API
 
 ## Introdução
 
-Este guia reúne recomendações práticas para reduzir o risco de bloqueios, restrições ou banimentos ao utilizar o WhatsApp por meio de integrações via API.
+Este guia reúne recomendações práticas para reduzir o risco de bloqueios, restrições ou banimentos ao utilizar o WhatsApp por meio de integrações via API. Seguir essas boas práticas é fundamental para manter a saúde do número, melhorar a entregabilidade das mensagens e reduzir os riscos de bloqueios ou restrições por parte do WhatsApp.
 
 É importante destacar que não existe uma configuração que garanta 100% de proteção contra bloqueios, pois as políticas e algoritmos do WhatsApp são internos e podem mudar ao longo do tempo. O objetivo dessas práticas é reduzir riscos e melhorar o comportamento do número na plataforma.
 
@@ -16,28 +16,35 @@ Números que aparentam ser utilizados apenas para automação ou disparos têm m
 
 **Boas práticas:**
 
-- Utilizar o número ocasionalmente no celular  
-- Realizar conversas reais com contatos  
-- Participar de grupos  
-- Enviar e responder mensagens manualmente de vez em quando  
-- Evitar que o número seja utilizado apenas por automações  
+- Utilizar o número ocasionalmente no celular
+- Realizar conversas reais com contatos
+- Participar de grupos
+- Enviar e responder mensagens manualmente de vez em quando
+- Realizar chamadas de voz e videochamadas
+- Enviar mídias (imagens, vídeos, áudios e documentos)
+- Evitar que o número seja utilizado apenas por automações
 
-Esse comportamento ajuda a plataforma a identificar o número como um usuário real, e não apenas um sistema automatizado.
+Esse comportamento ajuda a plataforma a identificar o número como um usuário real, e não apenas um sistema automatizado, demonstrando que ele está sendo utilizado de forma legítima por uma pessoa ou empresa real.
 
 ### 2. Evite grandes volumes de envio sem interação
 
 O WhatsApp analisa o equilíbrio entre:
 
-- Mensagens enviadas  
-- Mensagens recebidas  
+- Mensagens enviadas
+- Mensagens recebidas
 
 Quando um número envia muitas mensagens e recebe poucas respostas, esse comportamento pode ser identificado como spam.
 
 **Boas práticas:**
 
-- Estimular respostas do usuário  
-- Criar mensagens que incentivem interação  
-- Evitar envios unidirecionais constantes  
+- Estimular respostas do usuário
+- Criar mensagens que incentivem interação
+- Evitar envios unidirecionais constantes
+- Não enviar mais mensagens do que o número costuma receber
+
+**Limite o volume diário:**
+
+Como referência, se o número recebe cerca de 50 mensagens por dia, limite os envios ativos a aproximadamente 40 mensagens diárias. Aumente o volume gradualmente conforme o histórico e a reputação do número evoluem.
 
 ### 3. Incentive a interação dos clientes
 
@@ -45,11 +52,11 @@ Criar oportunidades para o cliente interagir com a mensagem ajuda a reduzir o ri
 
 **Estratégias:**
 
-- Incluir perguntas nas mensagens  
-- Oferecer botões de resposta  
-- Pedir confirmação  
-- Solicitar feedback  
-- Facilitar a resposta do cliente  
+- Incluir perguntas nas mensagens
+- Oferecer botões de resposta
+- Pedir confirmação
+- Solicitar feedback
+- Facilitar a resposta do cliente
 
 Cada interação recebida contribui para manter o equilíbrio entre envio e recebimento de mensagens.
 
@@ -59,13 +66,13 @@ Sempre que possível, permita que o cliente informe que não deseja mais receber
 
 **Exemplo:**
 
-“Caso não queira mais receber mensagens, responda SAIR.”
+"Caso não queira mais receber mensagens, responda SAIR."
 
 **Benefícios:**
 
-- Reduz denúncias de spam  
-- Evita bloqueios diretos do número  
-- Melhora a qualidade da base de contatos  
+- Reduz denúncias de spam
+- Evita bloqueios diretos do número
+- Melhora a qualidade da base de contatos
 
 ### 5. Varie o conteúdo das mensagens
 
@@ -73,32 +80,41 @@ Evite enviar sempre o mesmo texto para todos os contatos.
 
 Alterar apenas variáveis como:
 
-- Nome  
-- Data  
-- Valor  
+- Nome
+- Data
+- Valor
 
 não é suficiente.
 
 **Boas práticas:**
 
-- Criar várias versões da mesma mensagem  
-- Mudar a estrutura das frases  
-- Variar o vocabulário  
-- Utilizar diferentes formatos de comunicação  
+- Crie pelo menos cinco variações diferentes da mesma mensagem (ex.: Mensagem A, B, C, D e E), mantendo o mesmo objetivo mas alterando a estrutura e a redação dos textos
+- Utilize blocos de randomização nos fluxos para que os contatos não recebam exatamente o mesmo conteúdo
+- Mude a estrutura das frases e varie o vocabulário
+- Sempre se apresente logo no início da mensagem, informando o nome da pessoa ou da empresa
+- Personalize a comunicação utilizando o nome do contato sempre que possível
+- Utilize diferentes formatos de comunicação (texto, imagem, áudio, vídeo)
 
-Em vez de repetir sempre a mesma mensagem, utilize diferentes formas de transmitir a mesma informação.
+**Exemplo:**
+
+❌ "Olá! Temos uma oferta para você."
+
+✅ "Olá, João! Aqui é a equipe da Empresa X. Gostaríamos de apresentar uma oportunidade que pode ajudar seu negócio."
+
+Em vez de repetir sempre a mesma mensagem, utilize diferentes formas de transmitir a mesma informação. Isso torna as mensagens mais naturais, reduz a repetição de conteúdo e diminui o risco de o WhatsApp identificar comportamento automatizado.
 
 ### 6. Utilize intervalos entre mensagens
 
-Envios contínuos e rápidos aumentam o risco de bloqueio.
+Envios contínuos e rápidos, ou disparos em massa com grande volume simultâneo, aumentam o risco de bloqueio.
 
 **Boas práticas:**
 
-- Utilizar intervalos entre mensagens  
-- Evitar disparos muito rápidos  
-- Distribuir os envios ao longo do tempo  
+- Utilizar intervalos entre mensagens, distribuindo os envios ao longo do tempo
+- Como ponto de partida, recomenda-se um intervalo mínimo de 5 minutos entre os disparos
+- Conforme o número ganha histórico e reputação, os intervalos podem ser reduzidos gradualmente
+- Evitar disparos muito rápidos
 
-Em alguns casos observados, intervalos maiores (como alguns minutos entre mensagens) apresentam melhor estabilidade.
+Em alguns casos observados, intervalos maiores (como alguns minutos entre mensagens) apresentam melhor estabilidade. Isso reduz o risco de bloqueios, melhora a taxa de entrega e torna o comportamento do número mais natural.
 
 ### 7. Simule comportamento humano nas mensagens
 
@@ -106,52 +122,87 @@ Algumas práticas ajudam a tornar o envio mais natural.
 
 **Exemplos:**
 
-- Simular indicador de digitação  
-- Evitar respostas sempre instantâneas  
-- Aplicar delays entre ações  
+- Simular indicador de digitação
+- Evitar respostas sempre instantâneas
+- Aplicar delays entre ações
 
 Esse tipo de comportamento reduz a percepção de automação total.
 
-### 8. Separe números de atendimento e disparo
+### 8. Defina horários adequados de funcionamento
+
+Configure os envios para ocorrerem dentro de horários comerciais ou em períodos adequados ao seu público.
+
+**Evite:**
+
+- Madrugada
+- Horários de baixa interação
+- Períodos que possam gerar desconforto ao destinatário
+
+**Benefícios:**
+
+- Melhor experiência para os contatos
+- Maior taxa de resposta
+- Menor probabilidade de denúncias e bloqueios
+
+### 9. Separe números de atendimento e disparo
 
 Uma estratégia comum é separar funções entre números.
 
 **Exemplo:**
 
-- Número 1: Atendimento ao cliente  
-- Número 2: Envio de notificações ou campanhas  
+- Número 1: Atendimento ao cliente
+- Número 2: Envio de notificações ou campanhas
 
 **Benefícios:**
 
-- Protege o número principal da empresa  
-- Reduz o impacto em caso de restrições  
-- Melhora a organização do uso do canal  
+- Protege o número principal da empresa
+- Reduz o impacto em caso de restrições
+- Melhora a organização do uso do canal
 
-### 9. Mantenha a maturação do número
+### 10. Mantenha a maturação do número
 
 Números recém ativados ou pouco utilizados podem ter maior sensibilidade a restrições.
 
 **Boas práticas:**
 
-- Iniciar o uso de forma gradual  
-- Aumentar o volume aos poucos  
-- Manter conversas reais ao longo do tempo  
+- Iniciar o uso de forma gradual
+- Aumentar o volume aos poucos
+- Manter conversas reais ao longo do tempo
+- Trocar mensagens manualmente com contatos reais
+- Participar de grupos de WhatsApp
+- Compartilhar imagens, vídeos e áudios
+- Responder conversas de forma natural
 
 Esse processo é conhecido como aquecimento ou maturação do número.
 
+Se o número possui aproximadamente 50 conversas frequentes, recomenda-se iniciar com cerca de 10 envios ativos por dia e aumentar gradualmente.
+
 Para números recém desbanidos, recomendamos realizar a maturação por cerca de 3 a 5 dias antes de conectar novamente à API, simulando comportamento humano: interagir em grupos, enviar e receber mensagens, salvar contatos, entre outros.
 
-### 10. Entenda que bloqueios podem ocorrer mesmo seguindo boas práticas
+### 11. Entenda que bloqueios podem ocorrer mesmo seguindo boas práticas
 
 Mesmo aplicando todas as recomendações, bloqueios ainda podem acontecer.
 
 Isso ocorre porque:
 
-- O WhatsApp utiliza algoritmos internos  
-- As políticas podem mudar  
-- O comportamento dos usuários também influencia  
+- O WhatsApp utiliza algoritmos internos
+- As políticas podem mudar
+- O comportamento dos usuários também influencia
 
 Por esse motivo, o foco deve ser sempre reduzir riscos e manter um uso saudável da plataforma.
+
+### Resumo das principais recomendações
+
+- Mantenha o número com comportamento natural (conversas reais, grupos, chamadas)
+- Equilibre mensagens enviadas e recebidas; não envie mais do que o número costuma receber
+- Ofereça sempre uma opção de descadastro
+- Crie pelo menos 5 variações de cada mensagem e utilize randomização nos fluxos
+- Personalize as mensagens com o nome do contato e identifique a empresa
+- Configure intervalos entre os envios (mínimo recomendado: 5 minutos)
+- Limite o volume diário de mensagens e aumente gradualmente
+- Envie mensagens em horários apropriados, evitando madrugada
+- Separe números de atendimento e de disparo/campanhas
+- Faça o aquecimento (maturação) do número antes de iniciar campanhas
 
 ### Conclusão
 
@@ -159,10 +210,11 @@ O uso sustentável do WhatsApp depende principalmente de boas práticas de comun
 
 Os principais pilares para reduzir bloqueios são:
 
-- Comportamento natural do número  
-- Equilíbrio entre envio e recebimento  
-- Variação de conteúdo  
-- Estímulo à interação do cliente  
-- Uso responsável de automações  
+- Comportamento natural do número
+- Equilíbrio entre envio e recebimento
+- Variação de conteúdo
+- Estímulo à interação do cliente
+- Uso responsável de automações
+- Aquecimento e maturação do número
 
 Seguindo essas práticas, é possível reduzir significativamente a frequência de bloqueios e melhorar a estabilidade das operações no WhatsApp.
