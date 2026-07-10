@@ -1,0 +1,83 @@
+---
+title: "Introdução"
+description: "Conecte sua IA ao WhatsApp usando o servidor MCP da Z-API"
+---
+
+## O que é o MCP Z-API?
+
+O MCP Z-API é um servidor que expõe operações do WhatsApp como ferramentas prontas para qualquer IA compatível com MCP — Claude, ChatGPT, agentes customizados, entre outros.
+
+Em vez de chamar a API REST diretamente, a IA conversa com o servidor MCP e ele executa as ações na sua instância Z-API.
+
+<Info>
+**Novo no MCP?** MCP (Model Context Protocol) é um padrão aberto que define como IAs se conectam a sistemas externos. Funciona como um "menu de habilidades": a IA pergunta o que o servidor sabe fazer, escolhe a ação e envia os dados necessários.
+</Info>
+
+---
+
+## O que dá pra fazer
+
+Hoje o MCP Z-API expõe 9 ferramentas, divididas em dois grupos:
+
+### Mensagens
+
+| Ferramenta | O que faz |
+|---|---|
+| **Send-text** | Envia uma mensagem de texto para um número ou grupo |
+| **Send-image** | Envia uma imagem (link ou Base64), com legenda opcional |
+| **Send-video** | Envia um vídeo (link ou Base64), com legenda opcional |
+
+### Grupos
+
+| Ferramenta | O que faz |
+|---|---|
+| **Group-create** | Cria um novo grupo com os participantes informados |
+| **Group-add-participant** | Adiciona novos membros a um grupo existente |
+| **Group-remove-participant** | Remove membros de um grupo |
+| **Group-add-admin** | Promove um ou mais participantes a administradores do grupo |
+| **Group-remove-admin** | Remove a administração de um ou mais membros do grupo |
+| **Group-metadata** | Retorna as informações do grupo (nome, participantes, admins, etc.) |
+
+Novas ferramentas são adicionadas conforme o servidor evolui.
+
+<Warning>
+Ações sobre grupos e participantes têm efeito imediato no WhatsApp. Como qualquer ação executada por uma IA, revise o que o agente vai fazer antes de autorizar, principalmente em fluxos automatizados.
+</Warning>
+
+---
+
+## Como funciona na prática
+
+```
+Usuário faz um pedido à IA
+        │
+        ▼
+IA consulta o MCP Z-API → recebe a lista de ferramentas disponíveis
+        │
+        ▼
+IA escolhe a ferramenta e envia os parâmetros (ex.: número + mensagem)
+        │
+        ▼
+MCP valida o token OAuth e aciona a Z-API
+        │
+        ▼
+Ação executada no WhatsApp → IA confirma ao usuário ✅
+```
+
+---
+
+## Perguntas frequentes
+
+<AccordionGroup>
+  <Accordion title="Preciso de uma conta Z-API?">
+    Sim. O MCP é uma camada sobre a Z-API, não um substituto. A instância de WhatsApp precisa estar conectada normalmente na plataforma.
+  </Accordion>
+
+  <Accordion title="A mensagem sai do número de quem?">
+    Do número conectado à instância Z-API do cliente — igual a qualquer envio pela API tradicional.
+  </Accordion>
+
+  <Accordion title="Dá pra criar e gerenciar grupos pelo MCP?">
+    Sim. Hoje já é possível criar grupos, adicionar e remover participantes, e promover ou remover administradores diretamente pelas ferramentas do MCP.
+  </Accordion>
+</AccordionGroup>

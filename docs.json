@@ -76,6 +76,13 @@
                 "pages": ["security/introduction", "security/ip-block", "security/twofactor", "security/client-token"]
               },
               {
+                "group": "MCP Server",
+                "pages": [
+                  "mcp/introduction",
+                  "mcp/how-to-connect"
+                ]
+              },
+              {
                 "group": "Dicas",
                 "pages": [
                   "tips/calls-guide",
@@ -161,6 +168,13 @@
               {
                 "group": "Security",
                 "pages": ["en/security/introduction", "en/security/ip-block", "en/security/twofactor", "en/security/client-token"]
+              },
+              {
+                "group": "MCP Server",
+                "pages": [
+                  "en/mcp/introduction",
+                  "en/mcp/how-to-connect"
+                ]
               },
               {
                 "group": "Tips",
