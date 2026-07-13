@@ -38,12 +38,24 @@ Method used to delete a message from a chat. You can delete both a message you s
   Set to `true` if you sent the message or `false` if it was a received message
 </ParamField>
 
+<ParamField query="deleteForMe" type="boolean">
+  Set to `true` to delete the message only for you ("Delete for me"), keeping it visible to the recipient. If not informed or set to `false`, the message will be deleted for everyone.
+</ParamField>
+
 ## Request Example
 
 ### Example URL
 
 ```bash
 DELETE https://api.z-api.io/instances/{instanceId}/token/{instanceToken}/messages?messageId=123&phone=5511999998888&owner=true
+```
+
+### Deleting only for me
+
+To delete the message only "for me," simply add the `deleteForMe` parameter to the delete message endpoint request.
+
+```bash
+DELETE https://api.z-api.io/instances/{instanceId}/token/{instanceToken}/messages?messageId=123&phone=5511999998888&owner=true&deleteForMe=true
 ```
 
 ---
@@ -64,4 +76,4 @@ Make sure you are correctly sending the method specification, that is, verify th
 
 ### 415
 
-If you receive a 415 error, make sure to add the "Content-Type" header to your request, which in most cases is "application/json".
+If you receive a 415 error, make sure to add the "Content-Type" header to your request for the object you're sending, most commonly "application/json".
