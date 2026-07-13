@@ -38,12 +38,24 @@ Método utilizado para apagar uma mensagem em um chat, você pode deletar tanto 
   Informe `true` caso você tenha enviado a mensagem ou `false` para casos onde seja uma mensagem recebida
 </ParamField>
 
+<ParamField query="deleteForMe" type="boolean">
+  Informe `true` para apagar a mensagem apenas para você ("Apagar para mim"), mantendo-a visível para o destinatário. Caso não seja informado ou seja `false`, a mensagem será apagada para todos.
+</ParamField>
+
 ## Exemplo de requisição
 
 ### URL exemplo
 
 ```bash
 DELETE https://api.z-api.io/instances/{instanceId}/token/{instanceToken}/messages?messageId=123&phone=5511999998888&owner=true
+```
+
+### Excluindo apenas para mim
+
+Para excluir a mensagem apenas "para mim", basta adicionar o parâmetro `deleteForMe` na requisição do endpoint de deletar mensagem.
+
+```bash
+DELETE https://api.z-api.io/instances/{instanceId}/token/{instanceToken}/messages?messageId=123&phone=5511999998888&owner=true&deleteForMe=true
 ```
 
 ---
