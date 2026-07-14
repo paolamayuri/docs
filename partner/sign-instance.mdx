@@ -31,13 +31,35 @@ Não é necessário enviar o **Client-Token** nessas requisições.
 O atributo **withCalls** é opcional. Caso não seja enviado, a requisição continuará funcionando normalmente com o comportamento padrão. Este recurso está disponível apenas para contas que possuem a funcionalidade de chamadas habilitada.
 </Info>
 
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url https://api.z-api.io/instances/{instanceId}/token/{token}/integrator/on-demand/subscription \
+  --header 'Authorization: Bearer <Partner-Token>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "withCalls": false
+}
+'
+```
+
+```json JSON
+{
+  "withCalls": false
+}
+```
+
+</RequestExample>
+
 ---
 
 ## Request Body
 
 ```json
 {
-  "withCalls": true
+  "withCalls": false
 }
 ```
 
