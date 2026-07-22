@@ -1,0 +1,105 @@
+---
+title: "Como conectar"
+description: "Conecte sua conta Z-API ao servidor MCP e autorize seu app de IA"
+---
+
+O servidor MCP da Z-API pode ser conectado a qualquer aplicativo de IA compatível com MCP (Claude, ChatGPT, agentes customizados, entre outros). O processo é sempre parecido: adicionar o servidor como um conector/ferramenta personalizada e autorizar o acesso à sua instância.
+
+Abaixo mostramos o passo a passo usando o **Claude** como exemplo, por ser um dos apps de IA mais usados — mas a lógica é a mesma em qualquer cliente MCP.
+
+### 1. Abra as configurações de Conectores
+
+No Claude, vá em **Configurações → Conectores**. Clique no menu **Adicionar**, no canto superior direito, e selecione **Adicionar conector personalizado**.
+
+<Frame>
+  <img src="/images/claude-conectores-adicionar.png" alt="Tela de Conectores do Claude com o menu Adicionar aberto, mostrando as opções Navegar conectores e Adicionar conector personalizado" />
+</Frame>
+
+### 2. Preencha nome e URL do servidor
+
+Na janela **Adicionar conector personalizado**, informe:
+
+- **Nome**: o nome que você preferir — usamos `Z-API` apenas como sugestão para facilitar a identificação depois
+- **URL do servidor MCP**: `https://mcp.z-api.io/mcp`
+
+<Frame>
+  <img src="/images/claude-adicionar-conector-personalizado.png" alt="Formulário Adicionar conector personalizado do Claude preenchido com o nome Z-API e a URL https://mcp.z-api.io/mcp" style={{borderRadius: "8px"}}/>
+</Frame>
+
+Clique em **Adicionar**. O conector Z-API aparecerá na lista de conectores, ainda como **não conectado**.
+
+### 3. Vincule sua instância
+
+Abra o conector **Z-API** na lista e clique em **Vincular**.
+
+<Frame>
+  <img src="/images/claude-vincular-zapi.png" alt="Página do conector Z-API no Claude mostrando o botão Vincular antes de conectar" />
+</Frame>
+
+Isso abre uma aba do navegador para autorizar a conexão. Você precisa estar **logado na plataforma da Z-API** para prosseguir — caso ainda não esteja, será solicitado o login antes de exibir a lista de instâncias.
+
+Escolha qual **instância** da sua conta Z-API deseja autorizar. Localize a instância desejada na lista (você pode usar a busca) e clique em **Selecionar**.
+
+<Frame>
+  <img src="/images/claude-selecionar-instancia.png" alt="Tela Qual instância deseja conectar ao Claude, com uma lista de instâncias Z-API e o botão Selecionar em cada linha" />
+</Frame>
+
+<Info>
+Se a instância selecionada estiver **desconectada do WhatsApp** (sem o QR Code lido), vincular o conector MCP não conecta o WhatsApp automaticamente. Você ainda precisa acessar o painel da Z-API e ler o QR Code normalmente, para colocar a instância online.
+</Info>
+
+Depois de selecionar a instância, confirme em **Abrir Claude** (ou **Abrir aplicativo para desktop**, caso esteja usando o app desktop) para retornar automaticamente ao Claude.
+
+<Frame>
+  <img src="/images/claude-conectado-retorno.png" alt="Tela de confirmação Conectado, indicando que o Claude será aberto de volta automaticamente" style={{borderRadius: "8px", maxWidth: "400px", width: "100%"}}/>
+</Frame>
+
+### 4. Pronto para usar
+
+Ao selecionar a instância, a conexão é estabelecida automaticamente, disponibilizando todos os endpoints da Z-API compatíveis com o MCP, como envio de mensagens de texto, imagens, vídeos, gerenciamento de grupos e demais funcionalidades atualmente suportadas, para uso direto pelo Claude.
+
+Para usar o conector em uma conversa, clique no ícone **+** ao lado do campo de mensagem, vá em **Conectores** e ative o toggle da **Z-API**.
+
+<Frame>
+  <img src="/images/claude-ativar-zapi-conversa.png" alt="Menu de conectores do Claude no campo de mensagem com o toggle da Z-API ativado" style={{borderRadius: "8px"}}/>
+</Frame>
+
+Pronto! Agora a IA já está conectada à sua instância Z-API. Basta pedir, em linguagem natural, que ela envie uma mensagem, uma imagem, crie um grupo ou execute qualquer uma das ações disponíveis — ela vai identificar a ferramenta certa e fazer a requisição por você.
+
+<Info>
+Depois de conectado, o app de IA passa a aparecer na aba **Apps conectados**, dentro do painel da instância na Z-API. É por lá que você pode acompanhar quando foi conectado, o último uso e remover o acesso quando quiser.
+</Info>
+
+---
+
+## Autenticação
+
+A conexão é feita via **OAuth**, vinculando a instância Z-API escolhida diretamente ao conector no seu app de IA. A IA nunca acessa senha ou credenciais do WhatsApp diretamente — apenas os endpoints autorizados da instância selecionada.
+
+<Warning>
+Desconectar o **WhatsApp** da instância (ler o QR Code novamente) **não revoga** automaticamente o acesso do app de IA. As duas conexões são independentes.
+
+Para revogar o acesso da IA, vá até a aba **Apps conectados** no painel da sua instância Z-API e remova o app por lá — isso encerra o acesso imediatamente, sem precisar mexer nas configurações do app de IA.
+</Warning>
+
+---
+
+## Perguntas frequentes
+
+<AccordionGroup>
+  <Accordion title="Desconectei o WhatsApp da instância (li o QR Code novamente) no painel da Z-API. Isso desconecta o app de IA também?">
+    Não. São duas conexões independentes. Desconectar o WhatsApp da instância não remove o app de IA nem revoga sua autorização — o acesso continua ativo até que você o remova manualmente na aba **Apps conectados**, no painel da instância.
+  </Accordion>
+
+  <Accordion title="Como revogo o acesso do app de IA sem desconectar o WhatsApp?">
+    Acesse o painel da sua instância na Z-API, vá até a aba **Apps conectados** e remova o app desejado por lá. Isso encerra o acesso imediatamente, sem afetar a conexão do WhatsApp.
+  </Accordion>
+
+  <Accordion title="A IA não consegue enviar mensagem — o que verificar?">
+    **(1)** O conector Z-API está ativado para essa conversa? **(2)** A instância selecionada está conectada e ativa no painel da Z-API? **(3)** A vinculação/token expirou? Se sim, desvincule e vincule novamente o conector nas configurações do app de IA. Persistindo, acione o suporte técnico.
+  </Accordion>
+
+  <Accordion title="Preciso adicionar o conector em cada conversa?">
+    Não. Depois de adicionado e vinculado uma vez, o conector fica disponível para ser ativado em qualquer conversa nova através do menu de conectores.
+  </Accordion>
+</AccordionGroup>
