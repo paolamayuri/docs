@@ -29,4 +29,6 @@ Consulte as próximas páginas para entender em detalhes como utilizar os endpoi
 
 ## Sobre chamadas
 
-Ligações utilizam o mesmo canal de comunicação que as mensagens, então a fila é pausada para que não seja enviada outra mensagem ao mesmo tempo que estiver ligando para alguém.
+A instância de ligação também consegue enviar mensagens — ou seja, ao assinar uma instância de ligação, é possível utilizar essa mesma instância para realizar até 3 ligações simultâneas e enviar mensagens.
+
+Ao estar em uma ligação, as mensagens continuam sendo enviadas normalmente, não havendo interrupção da fila.
