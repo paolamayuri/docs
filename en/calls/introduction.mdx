@@ -29,4 +29,6 @@ Check the next pages to understand in detail how to use the calling endpoints.
 
 ## About calls
 
-Calls use the same communication channel as messages, so the queue is paused so that no other message is sent at the same time you're calling someone.
+The call instance can also send messages — meaning that once you subscribe to a call instance, you can use that same instance to make up to 3 simultaneous calls and send messages.
+
+While on a call, messages continue to be sent normally, with no interruption to the queue.
